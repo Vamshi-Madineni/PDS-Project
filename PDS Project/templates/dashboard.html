@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1, p {
+            text-align: center;
+        }
+
+        a {
+            display: block;
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    {% if 'user_id' in session %}
+        <div>
+            <h1>Welcome to the Dashboard</h1>
+
+            {% if 'is_root' in session and session['is_root'] %}
+                <!-- Display root dashboard content -->
+                <p>You are logged in as Root User</p>
+                <br>
+                <a href="{{ url_for('customers') }}">View Customers</a>
+                <a href="{{ url_for('add_customer') }}">Add Customer</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <!-- Display customer dashboard content -->
+                <p>You are logged in as Customer</p>
+                <br>
+                <!-- Add links specific to customer dashboard -->
+                <a href="{{url_for('modify_password')}}">Change Password</href>
+                <a href="{{url_for('service_locations')}}">Add/Modify Service Locations</a>
+                <a href="{{ url_for('add_device') }}">Add Device</a>
+                <a href="{{url_for('energy_consumption')}}">Avg. Energy Consumption By Each Device</a>
+                <a href="{{url_for('energy_consumption_graph')}}">Monthly Energy Consumption</a>
+                <a href="{{url_for('energy_cost_graph')}}">Energy Cost By Location</a>
+                <a href="{{url_for('most_used_device_type')}}">Most Used Device by Date</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+        </div>
+    {% endif %}
+</body>
+</html>

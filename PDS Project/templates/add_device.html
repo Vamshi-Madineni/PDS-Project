@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Smart Device</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-top: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            display: block;
+            margin-top: 15px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add New Smart Device</h1>
+
+        {% if error_message %}
+        <p>{{ error_message }}</p>
+        {% endif %}
+
+        <form action="{{ url_for('add_device') }}" method="post">
+            <label for="device_type">Device Type:</label>
+            <select name="device_type" required>
+                {% for device_type in device_types %}
+                    <option value="{{ device_type.DeviceType }}">{{ device_type.DeviceType }}</option>
+                {% endfor %}
+            </select><br>
+
+            <label for="model_number">Model Number:</label>
+            <select name="model_number" required>
+                {% for device_type, model_numbers in models_by_type.items() %}
+                    {% for model_number in model_numbers %}
+                        <option value="{{ model_number.ModelNumber }}">{{ model_number.ModelNumber }}</option>
+                    {% endfor %}
+                {% endfor %}
+            </select><br>
+
+            <label for="street_address">Street Address:</label>
+            <input type="text" name="street_address" required><br>
+
+            <label for="zip_code">Zip Code:</label>
+            <input type="text" name="zip_code" required><br>
+
+            <button type="submit">Add Smart Device</button>
+        </form>
+        <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+    </div>
+</body>
+</html>

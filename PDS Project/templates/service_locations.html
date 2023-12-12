@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Locations</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4caf50;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+
+        /* Add styles specific to service locations */
+        .remove-btn {
+            background-color: #e74c3c;
+        }
+
+        .remove-btn:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Service Locations</h1>
+
+        <!-- Form for adding/editing service locations -->
+        <form action="{{ url_for('service_locations') }}" method="post">
+            <input type="hidden" name="location_id" value="">
+            <label for="street_address">Street Address:</label>
+            <input type="text" name="street_address" required>
+
+            <label for="zip_code">Zip Code:</label>
+            <input type="text" name="zip_code" required>
+
+            <button type="submit">Add/Update Service Location</button>
+        </form>
+
+        <!-- Display existing service locations in a table -->
+        <table>
+            <tr>
+                <th>Street Address</th>
+                <th>Zip Code</th>
+                <th>Action</th>
+            </tr>
+            {% for location in service_locations %}
+                <tr>
+                    <td>{{ location.StreetAddress }}</td>
+                    <td>{{ location.ZipCode }}</td>
+                    <td>
+                        <a href="#" onclick="editLocation('{{ location.LocationID }}')">Edit</a>
+                        <a href="{{ url_for('remove_location', location_id=location.LocationID) }}" class="remove-btn">Remove</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <!-- Button to return to the dashboard -->
+        <a href="{{ url_for('dashboard') }}">Return to Dashboard</a>
+    </div>
+
+    <script>
+        var serviceLocations = {{ service_locations|tojson|safe }};
+        
+        function getLocation(locationId) {
+            var location = serviceLocations.find(loc => loc.LocationID == locationId);
+            // Now you can use the 'location' object as needed
+            console.log(location);
+        }
+
+        /* Add a script to handle confirmation for remove action */
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', function(event) {
+                event.preventDefault();
+                const confirmRemove = confirm('Are you sure you want to remove this service location?');
+                if (confirmRemove) {
+                    window.location.href = this.getAttribute('href');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

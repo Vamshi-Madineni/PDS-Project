@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Consumption Graph</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        div {
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1, p {
+            color: #333;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+
+        p.no-data {
+            color: #555;
+        }
+    </style>
+    <!-- Include any additional CSS or JS libraries for styling or interactivity -->
+</head>
+<body>
+    <div>
+        <h1>Energy Consumption Graph</h1>
+        <p>Year: {{ year }}</p>
+        {% if image_base64 %}
+            <img src="data:image/png;base64,{{ image_base64 }}" alt="Energy Consumption Graph">
+        {% else %}
+            <p>No data available for the selected year.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
